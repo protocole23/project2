@@ -30,4 +30,6 @@ public interface ProductService {
 	List<ProductVO> getListPaging(Criteria cri) throws Exception;
 	
 	int getTotalCount(Criteria cri) throws Exception;
+	
+	int getSellerIdByProductId(int productId) throws Exception;
 }

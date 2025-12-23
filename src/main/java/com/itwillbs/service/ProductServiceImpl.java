@@ -95,4 +95,9 @@ public class ProductServiceImpl implements ProductService {
 	public int getTotalCount(Criteria cri) throws Exception {
 		return productDAO.getTotalCount(cri);
 	}
+	
+	@Override
+    public int getSellerIdByProductId(int productId) throws Exception {
+        return productDAO.getSellerIdByProductId(productId);
+    }
 }

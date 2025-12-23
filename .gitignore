@@ -1,13 +1,27 @@
+# 빌드 산출물
 /target/
 /build/
 /bin/
 /out/
+
+# Eclipse 설정
 /.settings/
 /.classpath
 .project
+
+# 로그/임시 파일
 *.log
 *.tmp
 .springBeans
-/src/main/webapp/WEB-INF/spring/root-context.xml
-/src/main/webapp/WEB-INF/spring/security-context.xml
-/src/main/webapp/WEB-INF/spring/appdatasource.xml
+
+
+# OS 잡파일
+.DS_Store
+Thumbs.db
+
+# Maven / Gradle 산출물
+dependency-reduced-pom.xml
+release.properties
+*.war
+*.jar
+*.class

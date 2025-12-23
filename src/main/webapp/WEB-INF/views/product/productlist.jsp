@@ -2,65 +2,253 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/include/Header.jsp" />
+<link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
 
 <style>
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* 페이지 제목 */
+.pageTitle {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ff8a3d;
+}
+
+/* 검색 영역 */
+#searchForm {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+#searchForm {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+    width: 100%;
+}
+
+.footSearch {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+}
+
+#searchForm {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.footSearch {
+    width: 100%;
+    max-content: 500px; /* 최대 너비 제한 */
+    display: flex;
+    justify-content: center;
+}
+
+#subSearch {
+    display: flex !important; /* 가로 정렬 강제 */
+    flex-direction: row !important;
+    align-items: stretch !important; /* 자식 요소 높이 통일 */
+    width: 100%;
+    max-width: 500px;
+}
+
+#subSearch input.form-control {
+    flex: 1 !important;
+    height: 45px !important; /* 명확한 높이 지정 */
+    border: 1px solid #ccc !important;
+    border-right: none !important; /* 버튼과 만나는 선 제거 */
+    border-radius: 6px 0 0 6px !important;
+    margin: 0 !important; /* 기본 여백 제거 */
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+}
+
+#subSearch button.btn {
+    width: 55px !important;
+    height: 45px !important; /* input과 동일한 높이 강제 */
+    background-color: #ff8a3d !important;
+    border: none !important;
+    border-radius: 0 6px 6px 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    cursor: pointer !important;
+}
+
 /* 카드형 상품 리스트 */
 .productList {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-	padding: 0;
-	list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0;
+    list-style: none;
 }
 
 .productList li {
-	width: 200px;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	overflow: hidden;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-	background-color: #fff;
-	transition: transform 0.2s;
+    width: 220px;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .productList li:hover {
-	transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
 .prodThumb {
-	width: 100%;
-	height: 150px;
-	overflow: hidden;
-	text-align: center;
-	background-color: #f5f5f5;
+    width: 100%;
+    height: 150px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: background-color 0.3s;
 }
 
 .prodThumb img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.productList li:hover .prodThumb img {
+    transform: scale(1.05);
 }
 
 .prodInfo {
-	padding: 10px;
+    padding: 12px;
 }
 
 .prodTitle {
-	font-size: 16px;
-	font-weight: bold;
-	margin: 0 0 5px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin: 8px 0 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .prodPrice {
-	font-size: 14px;
-	color: #e74c3c;
-	margin: 0 0 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e74c3c;
+    margin: 0 0 5px;
 }
 
 .prodSeller {
-	font-size: 12px;
-	color: #888;
-	margin: 0;
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+}
+
+/* 판매 상태 */
+.prodStatus {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.status1 { background-color: #28a745; } /* 판매중 */
+.status2 { background-color: #ffc107; color: #333; } /* 예약중 */
+.status3 { background-color: #6c757d; } /* 거래완료 */
+
+/* 페이징 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.pagination li {
+    list-style: none;
+}
+
+.pagination li a {
+    display: block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.pagination li.active a {
+    background-color: #ff8a3d;
+    color: #fff;
+    border-color: #ff8a3d;
+}
+
+.pagination li a:hover {
+    background-color: #e07934;
+    color: #fff;
+}
+
+/* 상품 등록 버튼 */
+section .btn {
+    display: block;
+    margin: 30px auto 0;
+    padding: 10px 18px;
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+section .btn:hover {
+    background-color: #218838;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .productList li {
+        width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 기존 flex-direction: column을 제거하여 가로 배치 유지 */
+    #subSearch {
+        flex-direction: row; 
+    }
+    
+    #subSearch .btn {
+        width: 55px; /* 모바일에서도 버튼 너비 유지 */
+    }
 }
 </style>
 <section class="section fix-layout">
@@ -70,7 +258,9 @@
 		<div class="footSearch">
 			<div id="subSearch">
 				<input type="text" placeholder="검색어 입력" value="${pageVO.cri.search}" name="search" class="form-control">
-				<a href="#" class="btn"><i class="lni lni-24 lni-search-1"></i></a>
+				<button type="submit" class="btn">
+	                <i class="lni lni-search-alt lni-lg"></i>
+	            </button>
 			</div>
 		</div>
 	</form>
@@ -134,9 +324,6 @@
 	
 	<div>
 		<button class="btn" type="button" onclick="location.href='/product/register'" style="margin-top:20px;">상품 등록</button>
-	</div>
-	<div style="margin-top:20px;">
-		<button class="btn" type="button" onclick="location.href='/home'">홈으로 돌아가기</button>
 	</div>
 </section>
 

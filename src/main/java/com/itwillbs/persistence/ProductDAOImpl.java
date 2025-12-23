@@ -75,4 +75,9 @@ public class ProductDAOImpl implements ProductDAO {
 	public int getTotalCount(Criteria cri) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + ".getTotalCount", cri);
 	}
+	
+	@Override
+    public int getSellerIdByProductId(int productId) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + ".getSellerIdByProductId", productId);
+    }
 }

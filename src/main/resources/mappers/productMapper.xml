@@ -125,5 +125,12 @@
 	        AND title LIKE CONCAT('%', #{search}, '%')
 	    </if>
 	</select>
+	
+	
+	<select id="getSellerIdByProductId" resultType="int" parameterType="int">
+	    SELECT seller_id
+	    FROM product
+	    WHERE product_id = #{productId}
+	</select>
 
 </mapper>

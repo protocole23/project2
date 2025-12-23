@@ -112,7 +112,8 @@ public class UserController {
 		
 		if (loginVO != null && loginVO.getStatus() == 0) {
 			logger.info("3. 로그인 성공! 메인으로 이동합니다.");
-
+			
+			session.setAttribute("loginUser", loginVO);
 			session.setAttribute("userId", loginVO.getId());
 			session.setAttribute("userid", loginVO.getUserid());
 			session.setAttribute("userName", loginVO.getName());
