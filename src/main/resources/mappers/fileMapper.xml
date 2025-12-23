@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mapper.FileMapper">
+
+	<insert id="insertFile" parameterType="com.itwillbs.domain.FileVO">
+		INSERT INTO `file` (
+			ref_type,
+			ref_id,
+			origin_name,
+			stored_name,
+			file_path,
+			file_size,
+			created_at
+		)
+		VALUES (
+			#{refType},
+			#{refId},
+			#{originName},
+			#{storedName},
+			#{filePath},
+			#{fileSize},
+			NOW()
+		)
+	</insert>
+
+	<select id="getFiles" resultType="com.itwillbs.domain.FileVO">
+	    SELECT
+	        file_id AS fileId,
+	        ref_type AS refType,
+	        ref_id AS refId,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        created_at AS createdAt
+	    FROM file
+	    WHERE ref_type = #{refType}
+	      AND ref_id = #{refId}
+	</select>
+
+	<select id="getFile" resultType="com.itwillbs.domain.FileVO">
+	    SELECT
+	        file_id AS fileId,
+	        ref_type AS refType,
+	        ref_id AS refId,
+	        origin_name AS originName,
+	        stored_name AS storedName,
+	        file_path AS filePath,
+	        file_size AS fileSize,
+	        created_at AS createdAt
+	    FROM file
+	    WHERE file_id = #{fileId}
+	</select>
+
+	<delete id="deleteFile">
+        DELETE FROM file WHERE file_id = #{fileId}
+    </delete>
+
+	<delete id="deleteFiles">
+        DELETE FROM file
+        WHERE ref_type = #{refType}
+          AND ref_id = #{refId}
+    </delete>
+
+
+</mapper>

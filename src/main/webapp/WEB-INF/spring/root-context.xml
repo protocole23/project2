@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		https://www.springframework.org/schema/context/spring-context.xsd">
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<context:component-scan base-package="com.itwillbs" />
+	
+	<!-- dataSource : 디비 연결정보 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://itwillbs.com:3306/c6d2507t4p2?serverTimezone=Asia/Seoul&amp;useSSL=false" />
+		<property name="username" value="c6d2507t4p2" />
+		<property name="password" value="1234" />
+	</bean>
+	<!-- dataSource : 디비 연결정보 -->
+	
+	
+	<!-- sqlSessionFactory : 디비연결, 자원해제, SQL구문 실행,
+	                         mybatis 설정,mapper 설정 -->
+	<bean id="sqlSessionFactory" 
+		  class="org.mybatis.spring.SqlSessionFactoryBean">
+		  
+		  <property name="dataSource" ref="dataSource"/>
+		  <property name="configLocation" 
+		            value="classpath:/mybatis-config.xml"/>
+		  <property name="mapperLocations" 
+		            value="classpath:/mappers/**/*Mapper.xml"/>
+	</bean>
+	<!-- sqlSessionFactory : 디비연결, 자원해제, SQL구문 실행,
+	                         mybatis 설정,mapper 설정 -->
+	                         
+	<!-- sqlSession : 디비연결(자동), 자원해제(자동), SQL구문 실행,
+	                  mybatis 설정,mapper 설정,  -->               
+	<bean id="sqlSession" 
+	      class="org.mybatis.spring.SqlSessionTemplate"
+	      destroy-method="clearCache" >
+		
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>  
+	<!-- sqlSession : 디비연결(자동), 자원해제(자동), SQL구문 실행,
+	                  mybatis 설정,mapper 설정,  -->    
+	
+	
+		
+</beans>
