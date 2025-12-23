@@ -95,11 +95,11 @@
             <ul>
                 <li><form action="/" method="GET"><button type="submit">홈</button></form></li>
                 <li><form action="/product/productlist" method="GET"><button type="submit">상품 목록</button></form></li>
-                <li><form action="/notice/list" method="GET"><button type="submit">공지사항</button></form></li>
+                <li><form><button type="submit">공지사항</button></form></li>
                 <li><form action="/chat/rooms" method="GET"><button type="submit">채팅</button></form></li>
-                <li><form action="/order/list" method="GET"><button type="submit">거래내역</button></form></li>
-                <li><form action="/report/write" method="GET"><button type="submit">신고하기</button></form></li>
-                <li><form action="/wallet/info" method="GET"><button type="submit">내 지갑</button></form></li>
+                <li><form><button type="submit">거래내역</button></form></li>
+                <li><form><button type="submit">신고하기</button></form></li>
+                <li><form ><button type="submit">내 지갑</button></form></li>
             </ul>
         </nav>
     </header>

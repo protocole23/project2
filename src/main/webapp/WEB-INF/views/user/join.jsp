@@ -130,31 +130,166 @@
 	});
 </script>
 
-<h2>회원가입</h2>
+<style>
+    body {
+	font-family: Arial, sans-serif;
+	background-color: #f5f5f5;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
 
-<form action="${pageContext.request.contextPath}/user/join" method="post" class="form-join">
+/* 공통 콘텐츠 래퍼 */
+.content-wrapper {
+	flex: 1; /* 푸터를 아래로 밀지 않도록 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
 
-	<input type="hidden"
-		name="${_csrf.parameterName}"
-		value="${_csrf.token}">
+.form-join {
+	background-color: #fff;
+	width: 100%;
+	max-width: 500px;
+	min-width: 320px;
+	padding: 40px;
+	border-radius: 10px;
+	box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	text-align: center;
+}
 
-	<input type="text" id="userid" name="userid" placeholder="아이디" required>
-	<button type="button" id="checkID">중복검사</button>
-	<div id="useridCheckMsg"></div>
+.form-join h2 {
+	text-align: center;
+	margin-bottom: 30px;
+	color: #333;
+	font-size: 24px;
+}
 
-	<input type="password" id="pwd" name="userpw" placeholder="비밀번호" required>
-	<input type="password" id="pwdConfirm" placeholder="비밀번호 확인" required>
-	<div id="pwdError"></div>
+.form-join input[type="text"],
+.form-join input[type="password"],
+.form-join input[type="email"],
+.form-join input[type="tel"] {
+	width: 100%;
+	padding: 12px 15px;
+	margin: 8px 0;
+	border: 1px solid #ccc;
+	border-radius: 6px;
+	box-sizing: border-box;
+	font-size: 14px;
+}
 
-	<input type="email" name="email" placeholder="이메일" required>
-	<input type="text" name="name" placeholder="이름" required>
+/* 아이디 중복검사 섹션 */
+#userid-section {
+	display: flex;
+	align-items: center;
+	margin-bottom: 5px;
+}
 
-	<input type="tel" id="phone" name="phone" placeholder="전화번호" maxlength="11" required>
-	<div id="phoneError"></div>
+#userid-section input {
+	flex: 1;
+}
 
-	<input type="text" name="addr" placeholder="주소" required>
+#checkID {
+	padding: 12px 20px;
+	background-color: #ffc107;
+	color: #fff;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s;
+	margin-left: 0; /* 왼쪽으로 붙이기 */
+	float: left; /* 버튼을 왼쪽으로 이동 */
+}
 
-	<button type="submit">가입</button>
-</form>
+#checkID:hover {
+	background-color: #e0a800;
+}
+
+/* 오류 메시지 */
+#errorMsg,
+#pwdError,
+#phoneError,
+#useridCheckMsg {
+	color: red;
+	font-size: 13px;
+	margin-top: 5px;
+	word-break: break-word;
+	text-align: left;
+}
+
+/* 가입 버튼 */
+.form-join button[type="submit"] {
+	background-color: #28a745;
+	color: #fff;
+	padding: 12px;
+	width: 100%;
+	margin-top: 15px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 16px;
+	transition: background-color 0.3s;
+}
+
+.form-join button[type="submit"]:hover {
+	background-color: #218838;
+}
+
+/* =========================
+   미디어 쿼리 - 모바일 최적화
+========================= */
+@media (max-width: 480px) {
+	.login-container,
+	.form-join {
+		padding: 25px 15px;
+		width: 95%;
+	}
+	.login-container h2,
+	.form-join h2 {
+		font-size: 20px;
+	}
+	#checkID {
+		padding: 10px 15px;
+		margin-left: 5px;
+		font-size: 13px;
+	}
+}
+</style>
+
+<div class="content-wrapper">
+
+	<form class="form-join" action="${pageContext.request.contextPath}/user/join" method="post" class="form-join">
+		<h2>회원가입</h2>
+	
+		<input type="hidden"
+			name="${_csrf.parameterName}"
+			value="${_csrf.token}">
+	
+		<input type="text" id="userid" name="userid" placeholder="아이디" required>
+		<button type="button" id="checkID">중복검사</button>
+		<div id="useridCheckMsg"></div>
+	
+		<input type="password" id="pwd" name="userpw" placeholder="비밀번호" required>
+		<input type="password" id="pwdConfirm" placeholder="비밀번호 확인" required>
+		<div id="pwdError"></div>
+	
+		<input type="email" name="email" placeholder="이메일" required>
+		<input type="text" name="name" placeholder="이름" required>
+	
+		<input type="tel" id="phone" name="phone" placeholder="전화번호" maxlength="11" required>
+		<div id="phoneError"></div>
+	
+		<input type="text" name="addr" placeholder="주소" required>
+	
+		<button type="submit">가입</button>
+	</form>
+</div>
 
 <jsp:include page="/WEB-INF/views/include/Footer.jsp" />
