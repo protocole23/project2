@@ -72,7 +72,7 @@
 <script>
 	/* ===== 서버에서 내려준 값 ===== */
 	const roomId = "${roomId}";
-	const myId = "${sessionScope.loginUser.id}";
+	const myId = Number("${sessionScope.loginUser.id}");
 	const myNick = "${sessionScope.loginUser.name}";
 
 	/* ===== WebSocket 연결 (JSON 사용) ===== */
@@ -96,7 +96,7 @@
 			roomId: roomId,
 			senderId: myId,
 			senderNick: myNick,
-			content: text
+			message: text
 		};
 
 		/* WebSocket 전송 */

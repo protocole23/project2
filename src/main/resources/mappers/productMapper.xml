@@ -129,7 +129,7 @@
 	
 	<select id="getSellerIdByProductId" resultType="int" parameterType="int">
 	    SELECT seller_id
-	    FROM product
+	    	FROM product
 	    WHERE product_id = #{productId}
 	</select>
 

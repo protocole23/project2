@@ -10,4 +10,5 @@ public class ChatMessageVO {
 	private int senderId;
 	private String message;
 	private LocalDateTime sendTime;
+	private String senderNick;
 }

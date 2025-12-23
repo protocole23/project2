@@ -32,21 +32,23 @@
 		AND product_id = #{productId}
 	</select>
 
-	<insert id="insertMessage">
-		INSERT INTO chat_message (room_id, sender_id, message)
-		VALUES (#{roomId}, #{senderId}, #{message})
+	<insert id="insertMessage" parameterType="com.itwillbs.domain.ChatMessageVO">
+	    INSERT INTO chat_message (room_id, sender_id, message, is_read, created_at)
+	    VALUES (#{roomId}, #{senderId}, #{message}, 0, NOW())
 	</insert>
-
+	
 	<select id="getMessages" resultType="com.itwillbs.domain.ChatMessageVO">
-		SELECT
-			msg_id AS messageId,
-			room_id AS roomId,
-			sender_id AS senderId,
-			message,
-			created_at AS sendTime
-		FROM chat_message
-		WHERE room_id = #{roomId}
-		ORDER BY created_at ASC
+	    SELECT 
+	        m.msg_id AS messageId, 
+	        m.room_id AS roomId, 
+	        m.sender_id AS senderId, 
+	        u.name AS senderNick, 
+	        m.message, 
+	        m.created_at AS sendTime
+	    FROM chat_message m
+	    JOIN user u ON m.sender_id = u.id
+	    WHERE m.room_id = #{roomId}
+	    ORDER BY m.created_at ASC
 	</select>
 
 	<update id="updateLastMessage">

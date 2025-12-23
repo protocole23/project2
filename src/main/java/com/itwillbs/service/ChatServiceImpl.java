@@ -3,6 +3,8 @@ package com.itwillbs.service;
 import java.util.List;
 import javax.inject.Inject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.itwillbs.domain.ChatRoomVO;
 import com.itwillbs.domain.ChatMessageVO;
 import com.itwillbs.persistence.ChatDAO;
@@ -32,10 +34,13 @@ public class ChatServiceImpl implements ChatService {
 	public List<ChatMessageVO> getMessages(int roomId) throws Exception {
 		return dao.getMessages(roomId);
 	}
-
+	
+	@Transactional
 	@Override
 	public void insertMessage(ChatMessageVO vo) throws Exception {
 		dao.insertMessage(vo);
+		
+		dao.updateLastMessage(vo);
 	}
 	
 	@Override
@@ -46,7 +51,8 @@ public class ChatServiceImpl implements ChatService {
 		ChatRoomVO room = dao.getRoom(vo);
 		return room != null ? room.getRoomId() : null;
 	}
-
+	
+	@Transactional
 	@Override
 	public Integer createRoom(int productId, int buyerId) throws Exception {
 		ChatRoomVO vo = new ChatRoomVO();
