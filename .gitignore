@@ -8,3 +8,6 @@
 *.log
 *.tmp
 .springBeans
+/src/main/webapp/WEB-INF/spring/root-context.xml
+/src/main/webapp/WEB-INF/spring/security-context.xml
+/src/main/webapp/WEB-INF/spring/appdatasource.xml
