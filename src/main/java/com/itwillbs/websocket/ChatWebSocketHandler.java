@@ -16,16 +16,25 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		Integer roomId = getRoomId(session);
+		if (roomId == null) {
+			session.close(); // roomId 없으면 연결 종료
+			return;
+		}
 		roomSessions.computeIfAbsent(roomId, k -> ConcurrentHashMap.newKeySet()).add(session);
 	}
 
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		Integer roomId = getRoomId(session);
+		if (roomId == null) return;
+		
 
-		for (WebSocketSession s : roomSessions.get(roomId)) {
-			if (s.isOpen()) {
-				s.sendMessage(message);
+		Set<WebSocketSession> sessions = roomSessions.get(roomId);
+		if (sessions != null) {
+			for (WebSocketSession s : sessions) {
+				if (s.isOpen()) {
+					s.sendMessage(message);
+				}
 			}
 		}
 	}
@@ -33,24 +42,31 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		Integer roomId = getRoomId(session);
-		Set<WebSocketSession> sessions = roomSessions.get(roomId);
+		if (roomId == null) return;
 
+		Set<WebSocketSession> sessions = roomSessions.get(roomId);
 		if (sessions != null) {
 			sessions.remove(session);
+			if (sessions.isEmpty()) {
+				roomSessions.remove(roomId); 
+			}
 		}
 	}
 
 	private Integer getRoomId(WebSocketSession session) {
-		String uri = session.getUri().toString();
-		String query = uri.substring(uri.indexOf("?") + 1);
-		String[] params = query.split("&");
-
-		for (String param : params) {
-			String[] kv = param.split("=");
-			if (kv[0].equals("roomId")) {
-				return Integer.parseInt(kv[1]);
+		try {
+			String query = session.getUri().getQuery(); // "roomId=123"
+			if (query != null) {
+				for (String param : query.split("&")) {
+					String[] kv = param.split("=");
+					if (kv.length == 2 && kv[0].equals("roomId")) {
+						return Integer.parseInt(kv[1]);
+					}
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return -1;
+		return null;
 	}
 }

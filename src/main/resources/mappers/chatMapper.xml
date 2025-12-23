@@ -4,7 +4,7 @@
 
 <mapper namespace="com.itwillbs.mapper.ChatMapper">
 
-	<insert id="createRoom">
+	<insert id="createRoom" parameterType="com.itwillbs.domain.ChatRoomVO" useGeneratedKeys="true" keyProperty="roomId">
 		INSERT INTO chat_room (buyer_id, seller_id, product_id)
 		VALUES (#{buyerId}, #{sellerId}, #{productId})
 	</insert>

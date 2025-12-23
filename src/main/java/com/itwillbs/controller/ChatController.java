@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.domain.ChatMessageVO;
 import com.itwillbs.domain.ChatRoomVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.persistence.ChatDAO;
+import com.itwillbs.persistence.ProductDAO;
 import com.itwillbs.service.ChatService;
 
 @Controller
@@ -23,6 +25,12 @@ public class ChatController {
 
 	@Inject
 	private ChatService service;
+	
+	@Inject
+	private ProductDAO productDAO;
+	
+	@Inject
+	private ChatDAO chatDAO;
 
 	@RequestMapping(value = "/rooms", method = RequestMethod.GET)
 	public String rooms(HttpSession session, Model model) throws Exception {
@@ -38,15 +46,20 @@ public class ChatController {
 
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String room(
-		@RequestParam("roomId") int roomId,
-		Model model) throws Exception {
+	    @RequestParam(value = "roomId", required = false) Integer roomId,
+	    HttpSession session,
+	    Model model) throws Exception {
 
-		List<ChatMessageVO> messages = service.getMessages(roomId);
+	    UserVO user = (UserVO) session.getAttribute("loginUser");
+	    if (user == null) return "redirect:/user/login";
 
-		model.addAttribute("messages", messages);
-		model.addAttribute("roomId", roomId);
+	    if (roomId == null) return "redirect:/chat/rooms"; // roomId 없으면 목록으로
 
-		return "redirect:/chat/room?roomId=" + roomId;
+	    List<ChatMessageVO> messages = service.getMessages(roomId);
+	    model.addAttribute("messages", messages);
+	    model.addAttribute("roomId", roomId);
+
+	    return "/chat/room";
 	}
 
 	@RequestMapping(value = "/send", method = RequestMethod.POST)
@@ -54,6 +67,7 @@ public class ChatController {
 	public String send(ChatMessageVO vo, HttpSession session) throws Exception {
 
 		UserVO user = (UserVO) session.getAttribute("loginUser");
+		if (user == null) return "redirect:/user/login";
 		vo.setSenderId(user.getId());
 
 		service.insertMessage(vo);
@@ -62,21 +76,31 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
-	public String start(
-		@RequestParam int productId,
-		HttpSession session
-	) throws Exception {
-
+	public String start(@RequestParam int productId, HttpSession session) throws Exception {
 		UserVO user = (UserVO) session.getAttribute("loginUser");
-		int buyerId = user.getId();
+	    if (user == null) return "redirect:/user/login";
 
-		Integer roomId = service.findRoom(productId, buyerId);
+	    int buyerId = user.getId();
 
-		if (roomId == null) {
-			roomId = service.createRoom(productId, buyerId);
-		}
+	    // DAO를 통해 sellerId 조회
+	    int sellerId = productDAO.getSellerIdByProductId(productId);
 
-		return "redirect:/chat/room?roomId=" + roomId;
+	    ChatRoomVO roomVO = new ChatRoomVO();
+	    roomVO.setBuyerId(buyerId);
+	    roomVO.setSellerId(sellerId);
+	    roomVO.setProductId(productId);
+
+	    ChatRoomVO existingRoom = chatDAO.getRoom(roomVO);
+	    Integer roomId;
+
+	    if (existingRoom != null) {
+	        roomId = existingRoom.getRoomId();
+	    } else {
+	        chatDAO.createRoom(roomVO); // void 반환이어도 상관없음
+	        roomId = roomVO.getRoomId(); // MyBatis에서 useGeneratedKeys="true"로 자동 생성 키 가져오기
+	    }
+
+	    return "redirect:/chat/room?roomId=" + roomId;
 	}
 
 	

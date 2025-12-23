@@ -71,9 +71,9 @@
 
 <script>
 	/* ===== 서버에서 내려준 값 ===== */
-	const roomId = ${roomId};
-	const myId = ${sessionScope.loginUser.id};
-	const myNick = "${sessionScope.loginUser.nickname}";
+	const roomId = "${roomId}";
+	const myId = "${sessionScope.loginUser.id}";
+	const myNick = "${sessionScope.loginUser.name}";
 
 	/* ===== WebSocket 연결 (JSON 사용) ===== */
 	const socket = new WebSocket("ws://" + location.host + "/ws/chat?roomId=" + roomId);
@@ -82,7 +82,7 @@
 		const msg = JSON.parse(event.data);
 
 		const isMe = msg.senderId === myId;
-		appendMessage(msg.senderNick, msg.content, isMe);
+		appendMessage(msg.senderNick, msg.message, isMe);
 	};
 
 	/* ===== 메시지 전송 ===== */
@@ -112,10 +112,8 @@
 				"Content-Type": "application/x-www-form-urlencoded",
 				[csrfHeader]: csrfToken
 			},
-			body: "roomId=" + roomId + "&content=" + encodeURIComponent(text)
+			body: "roomId=" + roomId + "&message=" + encodeURIComponent(text)
 		});
-
-		appendMessage(myNick, text, true);
 		input.value = "";
 	}
 
@@ -163,7 +161,7 @@
 		<c:forEach var="msg" items="${messages}">
 			<div class="chat-message ${msg.senderId == sessionScope.loginUser.id ? 'me' : 'other'}">
 				<div class="chat-nick">${msg.senderNick}</div>
-				<div>${msg.content}</div>
+				<div>${msg.message}</div>
 			</div>
 		</c:forEach>
 	</div>
