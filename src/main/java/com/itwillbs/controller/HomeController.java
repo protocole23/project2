@@ -26,9 +26,6 @@ public class HomeController {
     @Inject
     private ProductService productService;
 
-    @Inject
-    private NoticeService noticeService;
-
     @RequestMapping(value = {"/", "/home"}, method = RequestMethod.GET)
     public String home(Model model, HttpSession session) throws Exception {
 
@@ -43,9 +40,7 @@ public class HomeController {
         List<ProductVO> latestProducts = productService.getRecentProducts();
         model.addAttribute("latestProducts", latestProducts);
 
-        // 공지사항
-        List<NoticeVO> noticeList = noticeService.getNoticeList();
-        model.addAttribute("noticeList", noticeList);
+        
 
         return "home";
     }
