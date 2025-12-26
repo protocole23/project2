@@ -251,7 +251,7 @@ public class ProductController {
 	// 이미지 반환 매핑
 	@RequestMapping(value="/image/{fileName:.+}", method=RequestMethod.GET)
 	public void serveImage(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
-	    File file = new File("C:/upload", fileName); // 실제 저장 경로
+	    File file = new File("/usr/local/tomcat/upload/", fileName); // 실제 저장 경로
 	    if(file.exists()) {
 	        // MIME 타입 설정 (이미지 확장자에 따라 자동 설정 가능)
 	        String mimeType = Files.probeContentType(file.toPath());
