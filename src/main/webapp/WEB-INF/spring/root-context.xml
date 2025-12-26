@@ -20,8 +20,8 @@
 		<property name="driverClassName"
 			value="com.mysql.cj.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/testdb3" />
-		<property name="username" value="root" />
+				 value="jdbc:mysql://itwillbs.com:3306/c6d2507t4p2?serverTimezone=UTC&useSSL=false"/>
+		<property name="username" value="c6d2507t4p2" />
 		<property name="password" value="1234" />
 	</bean>
 	<!-- dataSource : 디비 연결정보 -->
