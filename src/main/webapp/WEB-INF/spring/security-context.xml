@@ -11,6 +11,8 @@
 	
 	<security:http auto-config="true" use-expressions="true">
 		<security:intercept-url pattern="/home" access="permitAll" />
+		<security:intercept-url pattern="/product/register" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/product/update" access="hasRole('ROLE_MEMBER')" />
 		<security:intercept-url pattern="/product/**" access="permitAll" />
 		<security:intercept-url pattern="/resources/**" access="permitAll" />
 		<security:intercept-url pattern="/chat/**" access="hasRole('ROLE_MEMBER')" />
@@ -31,8 +33,7 @@
 		    delete-cookies="JSESSIONID" />
 			
 		<security:access-denied-handler ref="customAccessDenied" />
-        
-        <security:csrf />
+        <security:csrf disabled="true" />
 	</security:http>
 
 	<security:authentication-manager>

@@ -74,11 +74,13 @@ public class ProductController {
 		}
 		System.out.println("=== FILE UPLOAD DEBUG END ===");
 		
-	    Integer sellerId = (Integer) session.getAttribute("userId");
+		com.itwillbs.domain.UserVO user = (com.itwillbs.domain.UserVO) session.getAttribute("loginUser");
 
-	    if (sellerId == null) {
+	    if (user == null) {
 	        return "redirect:/user/login";
 	    }
+	    
+	    Integer sellerId = user.getId();
 
 		 // 1. 파일 먼저 처리
 	    vo.setSellerId(sellerId);
@@ -116,11 +118,11 @@ public class ProductController {
 						  HttpSession session, Model model) throws Exception {
 
 		ProductVO vo = productService.getProduct(productId);
-		Integer sellerId = (Integer) session.getAttribute("loginUser");
+		com.itwillbs.domain.UserVO user = (com.itwillbs.domain.UserVO) session.getAttribute("loginUser");
 
-		if (sellerId == null || vo.getSellerId() != sellerId) {
-			return "redirect:/product/list";
-		}
+		if (user == null || vo.getSellerId() != user.getId()) {
+	        return "redirect:/product/productlist";
+	    }
 
 		model.addAttribute("product", vo);
 		return "/product/update";
@@ -132,11 +134,11 @@ public class ProductController {
             @RequestParam(value="uploadFiles", required=false) MultipartFile[] images,
             HttpSession session) throws Exception {
 
-		Integer sellerId = (Integer) session.getAttribute("loginUser");
+		com.itwillbs.domain.UserVO user = (com.itwillbs.domain.UserVO) session.getAttribute("loginUser");
 
-		if (sellerId == null || vo.getSellerId() != sellerId) {
-			return "redirect:/product/productlist";
-		}
+		if (user == null || vo.getSellerId() != user.getId()) {
+	        return "redirect:/product/productlist";
+	    }
 
 		// 파일 업로드 처리
 		List<FileVO> fileList = new ArrayList<>();
@@ -227,7 +229,7 @@ public class ProductController {
 	public String deleteGET(@RequestParam("productId") int productId, 
 		HttpSession session) throws Exception {
 		
-		Integer userId = (Integer) session.getAttribute("loginUser");
+		Integer userId = (Integer) session.getAttribute("userId");
 		
 		if (userId == null) {
 			return "redirect:/user/login";
