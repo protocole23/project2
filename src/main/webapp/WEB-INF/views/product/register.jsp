@@ -4,6 +4,9 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e521fcb93dd80c8fe95035867771d15c&libraries=services"></script>
 
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <style>
     /* 1. 배경 및 폰트 설정 (Header와 조화롭게) */
     .register-wrapper {
@@ -110,6 +113,8 @@
         <h1>상품 등록</h1>
 
         <form id="productForm" action="/product/register" method="post" enctype="multipart/form-data">
+            
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             
             <div class="form-group">
                 <label for="title">상품명</label>

@@ -83,24 +83,43 @@ public class ChatController {
 	@RequestMapping(value = "/start", method = RequestMethod.GET)
 	public String start(@RequestParam int productId, HttpSession session) throws Exception {
 		UserVO user = (UserVO) session.getAttribute("loginUser");
-	    if (user == null) return "redirect:/user/login";
+		if (user == null) {
+			return "redirect:/user/login";
+		}
 
-	    int buyerId = user.getId();
+		int buyerId = user.getId();
 
-	    // DAO를 통해 sellerId 조회
-	    int sellerId = productDAO.getSellerIdByProductId(productId);
-	    
-	    System.out.println("구매자ID(buyerId): " + buyerId);
-	    System.out.println("판매자ID(sellerId): " + sellerId);
-	    System.out.println("상품ID(productId): " + productId);
+		// 1. 판매자 ID 조회
+		int sellerId = productDAO.getSellerIdByProductId(productId);
+		
+		System.out.println("구매자ID(buyerId): " + buyerId);
+		System.out.println("판매자ID(sellerId): " + sellerId);
+		System.out.println("상품ID(productId): " + productId);
 
-	    Integer roomId = service.findRoom(productId, buyerId);
+		// 2. 자신과의 채팅 방지 체크
+		if (buyerId == sellerId) {
+			return "redirect:/product/detail?productId=" + productId;
+		}
 
-	    if (roomId == null) {
-	        roomId = service.createRoom(productId, buyerId);
-	    }
+		// 3. 기존에 생성된 채팅방이 있는지 확인 (중복 생성 방지)
+		Integer roomId = service.findRoom(productId, buyerId, sellerId);
 
-	    return "redirect:/chat/room?roomId=" + roomId;
+		// 4. 방이 없는 경우에만 새로 생성
+		if (roomId == null) {
+			ChatRoomVO vo = new ChatRoomVO();
+			vo.setProductId(productId);
+			vo.setBuyerId(buyerId);
+			vo.setSellerId(sellerId);
+			
+			// 서비스 호출 (void 타입)
+			service.createRoom(vo);
+			
+			// MyBatis의 useGeneratedKeys 덕분에 vo에 채워진 roomId를 꺼냄
+			roomId = vo.getRoomId();
+		}
+
+		// 5. 최종 roomId로 이동
+		return "redirect:/chat/room?roomId=" + roomId;
 	}
 
 	

@@ -143,19 +143,22 @@ h1 {
 </div>
 
 <div class="section">
-    <c:if test="${not empty sessionScope.userId and sessionScope.userId == product.sellerId}">
-		<button class="btn" onclick="location.href='update?productId=${product.productId}'">수정</button>
-		<button class="btn" onclick="if(confirm('정말로 삭제하시겠습니까?')) { location.href='delete?productId=${product.productId}'; }">삭제</button>
-	</c:if>
+    <c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.id == product.sellerId}">
+        <button class="btn" onclick="location.href='update?productId=${product.productId}'">수정</button>
+        <button class="btn" onclick="if(confirm('정말로 삭제하시겠습니까?')) { location.href='delete?productId=${product.productId}'; }">삭제</button>
+    </c:if>
 
-    <c:if test="${not empty sessionScope.userId
-		and sessionScope.userId ne product.sellerId
-		and product.status eq 0}">
-		<button class="btn"
-			onclick="location.href='/chat/start?productId=${product.productId}'">
-			판매자와 채팅하기
-		</button>
-	</c:if>
+    <c:if test="${not empty sessionScope.loginUser 
+                and sessionScope.loginUser.id != product.sellerId 
+                and product.status eq 0}">
+        <button class="btn" onclick="location.href='/chat/start?productId=${product.productId}'">
+            판매자와 채팅하기
+        </button>
+    </c:if>
+
+    <c:if test="${empty sessionScope.loginUser}">
+        <p style="color: #666; font-size: 14px;">로그인 후 채팅이 가능합니다.</p>
+    </c:if>
 
     <button class="btn" type="button" onclick="history.back()">목록으로</button>
 </div>

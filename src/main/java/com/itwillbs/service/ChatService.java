@@ -21,7 +21,6 @@ public interface ChatService {
 		// 텍스트 메시지 전송
 		void insertMessage(ChatMessageVO vo) throws Exception;
 		
-		Integer findRoom(int productId, int buyerId) throws Exception;
-		Integer createRoom(int productId, int buyerId) throws Exception;
-
+		Integer findRoom(int productId, int buyerId, int sellerId) throws Exception;
+		void createRoom(int productId, int buyerId, int sellerId) throws Exception;
 }

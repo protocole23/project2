@@ -70,24 +70,27 @@
             
             <div class="top-menu">
                 <c:choose>
-                    <c:when test="${empty sessionScope.userName}">
-                        <form action="/user/login" method="GET" style="display:inline;">
-                            <button type="submit" class="action-button">로그인</button>
-                        </form>
-                        <form action="/user/join" method="GET" style="display:inline;">
-                            <button type="submit" class="action-button btn-gray">회원가입</button>
-                        </form>
-                    </c:when>
-                    <c:otherwise>
-                        <span class="user-info"><strong>${sessionScope.userName}</strong>님 환영합니다</span>
-                        <form action="/user/mypage" method="GET" style="display:inline;">
-                            <button type="submit" class="action-button">마이페이지</button>
-                        </form>
-                        <form action="/user/logout" method="GET" style="display:inline;">
-                            <button type="submit" class="action-button btn-gray" style="background:#adb5bd;">로그아웃</button>
-                        </form>
-                    </c:otherwise>
-                </c:choose>
+				    <c:when test="${empty sessionScope.loginUser}">
+				        <form action="/user/login" method="GET" style="display:inline;">
+				            <button type="submit" class="action-button">로그인</button>
+				        </form>
+				        <form action="/user/join" method="GET" style="display:inline;">
+				            <button type="submit" class="action-button btn-gray">회원가입</button>
+				        </form>
+				    </c:when>
+				    <c:otherwise>
+				        <span class="user-info">
+				            <strong>${sessionScope.loginUser.name}</strong>님 환영합니다
+				        </span>
+				        <form action="/user/mypage" method="GET" style="display:inline;">
+				            <button type="submit" class="action-button">마이페이지</button>
+				        </form>
+				        <form action="/user/logout" method="POST" style="display:inline;">
+				            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				            <button type="submit" class="action-button btn-gray" style="background:#adb5bd;">로그아웃</button>
+				        </form>
+				    </c:otherwise>
+				</c:choose>
             </div>
         </div>
 

@@ -11,13 +11,19 @@
 
 	<select id="getMyChatRooms" resultType="com.itwillbs.domain.ChatRoomVO">
 		SELECT
-			room_id AS roomId,
-			buyer_id AS buyerId,
-			seller_id AS sellerId,
-			product_id AS productId
-		FROM chat_room
-		WHERE buyer_id = #{userId}
-		OR seller_id = #{userId}
+			r.room_id AS roomId,
+			r.buyer_id AS buyerId,
+			r.seller_id AS sellerId,
+			r.product_id AS productId,
+			r.last_message AS lastMessage,
+			r.last_message_time AS lastMessageTime,
+			p.title AS productTitle,
+			(SELECT u.userid FROM user u WHERE u.id = CASE WHEN r.buyer_id = #{userId} THEN r.seller_id ELSE r.buyer_id END) AS targetNick
+		FROM chat_room r
+		JOIN product p ON r.product_id = p.product_id
+		WHERE r.buyer_id = #{userId}
+		OR r.seller_id = #{userId}
+		ORDER BY r.last_message_time DESC
 	</select>
 
 	<select id="getRoom" resultType="com.itwillbs.domain.ChatRoomVO">

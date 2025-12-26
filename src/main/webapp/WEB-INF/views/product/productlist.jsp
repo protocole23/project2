@@ -322,8 +322,20 @@ section .btn:hover {
 		</c:if>
 	</div>
 	
-	<div>
-		<button class="btn" type="button" onclick="location.href='/product/register'" style="margin-top:20px;">상품 등록</button>
+	<div style="text-align: center; margin-top: 30px;">
+	    <c:choose>
+	        <c:when test="${not empty sessionScope.loginUser}">
+	            <button class="btn" type="button" onclick="location.href='/product/register'">
+	                <i class="lni lni-plus"></i> 상품 등록
+	            </button>
+	        </c:when>
+	        <c:otherwise>
+	            <button class="btn" type="button" style="background-color: #6c757d;" 
+	                    onclick="if(confirm('상품 등록은 로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) { location.href='/user/login'; }">
+	                <i class="lni lni-plus"></i> 상품 등록
+	            </button>
+	        </c:otherwise>
+	    </c:choose>
 	</div>
 </section>
 

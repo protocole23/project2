@@ -55,24 +55,32 @@ public class ChatDAOImpl implements ChatDAO {
 	}
 
 	@Override
-	public Integer findRoom(int productId, int buyerId) throws Exception {
-	    ChatRoomVO param = new ChatRoomVO();
-	    param.setProductId(productId);
-	    param.setBuyerId(buyerId);
-	    ChatRoomVO room = sqlSession.selectOne(namespace + ".getRoom", param);
-	    return room != null ? room.getRoomId() : null;
+	public Integer findRoom(int productId, int buyerId, int sellerId) throws Exception {
+		ChatRoomVO param = new ChatRoomVO();
+		param.setProductId(productId);
+		param.setBuyerId(buyerId);
+		param.setSellerId(sellerId);
+		
+		ChatRoomVO room = sqlSession.selectOne(namespace + ".getRoom", param);
+		
+		if (room != null) {
+			return room.getRoomId();
+		}
+		return null;
 	}
 
 	@Override
-	public Integer createRoom(int productId, int buyerId) throws Exception {
-	    ChatRoomVO param = new ChatRoomVO();
-	    param.setProductId(productId);
-	    param.setBuyerId(buyerId);
-	    sqlSession.insert(namespace + ".createRoom", param);
-	    // MyBatis 설정에서 useGeneratedKeys="true", keyProperty="roomId"로 해야 param.getRoomId() 가능
-	    return param.getRoomId();
+	public void createRoom(int productId, int buyerId, int sellerId) throws Exception {
+		ChatRoomVO param = new ChatRoomVO();
+		param.setProductId(productId);
+		param.setBuyerId(buyerId);
+		param.setSellerId(sellerId);
+		
+		
+		sqlSession.insert(namespace + ".createRoom", param);
+		
 	}
-	
+
 	
 
 	

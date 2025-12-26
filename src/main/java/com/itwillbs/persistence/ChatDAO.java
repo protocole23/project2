@@ -1,8 +1,9 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
-import com.itwillbs.domain.ChatRoomVO;
+
 import com.itwillbs.domain.ChatMessageVO;
+import com.itwillbs.domain.ChatRoomVO;
 
 public interface ChatDAO {
 	// 채팅방 생성
@@ -23,6 +24,6 @@ public interface ChatDAO {
 	// 마지막 메세지
 	void updateLastMessage(ChatMessageVO vo) throws Exception;
 	
-	Integer findRoom(int productId, int buyerId) throws Exception;
-	Integer createRoom(int productId, int buyerId) throws Exception;
+	Integer findRoom(int productId, int buyerId, int sellerId) throws Exception;
+	void createRoom(int productId, int buyerId, int sellerId) throws Exception;
 }

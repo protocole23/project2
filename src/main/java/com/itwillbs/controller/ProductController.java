@@ -116,7 +116,7 @@ public class ProductController {
 						  HttpSession session, Model model) throws Exception {
 
 		ProductVO vo = productService.getProduct(productId);
-		Integer sellerId = (Integer) session.getAttribute("userId");
+		Integer sellerId = (Integer) session.getAttribute("loginUser");
 
 		if (sellerId == null || vo.getSellerId() != sellerId) {
 			return "redirect:/product/list";
@@ -132,7 +132,7 @@ public class ProductController {
             @RequestParam(value="uploadFiles", required=false) MultipartFile[] images,
             HttpSession session) throws Exception {
 
-		Integer sellerId = (Integer) session.getAttribute("userId");
+		Integer sellerId = (Integer) session.getAttribute("loginUser");
 
 		if (sellerId == null || vo.getSellerId() != sellerId) {
 			return "redirect:/product/productlist";
@@ -227,7 +227,7 @@ public class ProductController {
 	public String deleteGET(@RequestParam("productId") int productId, 
 		HttpSession session) throws Exception {
 		
-		Integer userId = (Integer) session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("loginUser");
 		
 		if (userId == null) {
 			return "redirect:/user/login";

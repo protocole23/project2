@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,8 +70,10 @@
 </style>
 
 <script>
+	
+	
 	/* ===== 서버에서 내려준 값 ===== */
-	const roomId = "${roomId}";
+	const roomId = Number("${roomId}");
 	const myId = Number("${sessionScope.loginUser.id}");
 	const myNick = "${sessionScope.loginUser.name}";
 
@@ -91,6 +93,19 @@
 		const text = input.value.trim();
 
 		if (text === "") return;
+		
+		// 1. 요소가 존재하는지 먼저 확인
+	    const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
+	    const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+
+	    // 2. 메타 태그가 없거나 내용이 비어있으면 에러 방지
+	    if (!csrfTokenMeta || !csrfHeaderMeta || !csrfHeaderMeta.content) {
+	        console.error("CSRF 메타 태그가 없거나 헤더 이름이 비어있습니다.");
+	        return; 
+	    }
+		
+		const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+		const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
 		const msg = {
 			roomId: roomId,
@@ -103,17 +118,26 @@
 		socket.send(JSON.stringify(msg));
 
 		/* DB 저장 */
-		const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-		const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+		const formData = new URLSearchParams();
+		formData.append("roomId", roomId);
+		formData.append("message", text);
+		
+		const customHeaders = {
+		        "Content-Type": "application/x-www-form-urlencoded"
+		};
 		
 		fetch("/chat/send", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-				[csrfHeader]: csrfToken
-			},
-			body: "roomId=" + roomId + "&message=" + encodeURIComponent(text)
-		});
+		    method: "POST",
+		    headers: {
+		    	"Content-Type": "application/x-www-form-urlencoded",
+		        [csrfHeader]: csrfToken
+		    },
+		    body: formData
+		})
+		.then(res => res.text())
+    	.then(data => console.log("DB 저장 응답:", data))
+    	.catch(err => console.error("Fetch 에러:", err));
+
 		input.value = "";
 	}
 

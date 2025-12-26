@@ -86,6 +86,8 @@
 		<h2>로그인</h2>
 	
 		<form action="${pageContext.request.contextPath}/user/login" method="post">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			
 			<input type="text" name="userid" placeholder="아이디">
 			<input type="password" name="userpw" placeholder="비밀번호">
 			<button type="submit">로그인</button>

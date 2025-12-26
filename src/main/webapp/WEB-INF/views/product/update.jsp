@@ -8,13 +8,99 @@
 	<title>상품 수정</title>
 	<script src="//t1.daumcdn.net/mapjs/prod/service/postcode/5.0.0/postcode.js"></script>
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=460a77fbaeeaaafcfd951a99cdbe4767&libraries=services"></script>
+
+	<meta name="_csrf" content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
+<style>
+	body {
+		font-family: 'Arial', sans-serif;
+		background-color: #f7f7f7;
+		margin: 0;
+		padding: 0;
+	}
+	h1 {
+		text-align: center;
+		margin-top: 30px;
+		color: #333;
+	}
+	form {
+		background-color: #fff;
+		max-width: 700px;
+		margin: 40px auto;
+		padding: 30px;
+		border-radius: 10px;
+		box-shadow: 0 0 15px rgba(0,0,0,0.1);
+	}
+	form div {
+		margin-bottom: 20px;
+	}
+	label {
+		display: block;
+		margin-bottom: 6px;
+		font-weight: bold;
+		color: #555;
+	}
+	input[type="text"], input[type="number"], textarea, select {
+		width: 100%;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		box-sizing: border-box;
+		font-size: 14px;
+	}
+	textarea {
+		height: 100px;
+		resize: vertical;
+	}
+	button {
+		padding: 10px 20px;
+		border: none;
+		border-radius: 6px;
+		background-color: #0077ff;
+		color: white;
+		cursor: pointer;
+		font-size: 14px;
+		margin-right: 10px;
+	}
+	button[type="button"] {
+		background-color: #888;
+	}
+	button:hover {
+		opacity: 0.9;
+	}
+	hr {
+		border: 0;
+		height: 1px;
+		background-color: #eee;
+		margin: 30px 0;
+	}
+	.img-preview {
+		display: flex;
+		gap: 15px;
+		flex-wrap: wrap;
+	}
+	.img-preview div {
+		text-align: center;
+	}
+	.img-preview img {
+		width: 120px;
+		height: 120px;
+		object-fit: cover;
+		border-radius: 6px;
+		border: 1px solid #ccc;
+	}
+</style>
+	
 </head>
 <body>
 
 	<h1>상품 수정</h1>
 
 	<form action="update" method="post" enctype="multipart/form-data">
-
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+		
 		<input type="hidden" name="productId" value="${product.productId}">
 		<input type="hidden" name="status" value="${product.status}">
 
