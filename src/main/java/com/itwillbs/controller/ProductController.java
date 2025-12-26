@@ -38,7 +38,7 @@ import com.itwillbs.service.ProductService;
 public class ProductController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
-	private static final String UPLOAD_PATH = "C:\\upload"; // 실제 업로드 경로로 변경
+	private static final String UPLOAD_PATH = "/usr/local/tomcat/upload/";
 
 	@Inject
 	private ProductService productService;
