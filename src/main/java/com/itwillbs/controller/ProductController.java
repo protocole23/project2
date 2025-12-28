@@ -155,20 +155,23 @@ public class ProductController {
 		List<FileVO> fileList = new ArrayList<>();
 
 		if(images != null) {
-			for(MultipartFile file : images) {
-				if(file.isEmpty()) continue;
+	        for(MultipartFile file : images) {
+	            if(file.isEmpty()) continue;
 
-				String storedName = recFileComponent.thumbUpload(file);
-
-	            FileVO fvo = new FileVO();
-	            fvo.setOriginName(file.getOriginalFilename());
-	            fvo.setStoredName(storedName);
-	            fvo.setFilePath("/upload/"); // recFileComponent 기준 경로
-	            fvo.setFileSize(file.getSize());
+	            String storedName = recFileComponent.thumbUpload(file);
 	            
-	            fileList.add(fvo);
-			}
+	            if(storedName != null) {
+	                FileVO fvo = new FileVO();
+	                fvo.setOriginName(file.getOriginalFilename());
+	                fvo.setStoredName(storedName);
+	                fvo.setFilePath("/upload/"); 
+	                fvo.setFileSize(file.getSize());
+	                
+	                fileList.add(fvo);
+	            }
+	        }
 	    }
+		
 		vo.setImages(fileList);
 	    productService.updateProduct(vo);
 	    return "redirect:/product/detail?productId=" + vo.getProductId();

@@ -10,4 +10,8 @@
   	<typeAliases>
   		<package name="com.itwillbs.domain"/>
   	</typeAliases>
+  	
+  	<mappers>
+		<package name="com.itwillbs.mapper"/>
+	</mappers>
   </configuration>
