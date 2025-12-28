@@ -6,90 +6,86 @@
 <head>
 	<meta charset="UTF-8">
 	<title>상품 수정</title>
-	<script src="//t1.daumcdn.net/mapjs/prod/service/postcode/5.0.0/postcode.js"></script>
-	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e521fcb93dd80c8fe95035867771d15c&libraries=services"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e521fcb93dd80c8fe95035867771d15c&libraries=services"></script>
 
 	<meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <style>
-	body {
-		font-family: 'Arial', sans-serif;
-		background-color: #f7f7f7;
-		margin: 0;
-		padding: 0;
-	}
-	h1 {
-		text-align: center;
-		margin-top: 30px;
-		color: #333;
-	}
-	form {
-		background-color: #fff;
-		max-width: 700px;
-		margin: 40px auto;
-		padding: 30px;
-		border-radius: 10px;
-		box-shadow: 0 0 15px rgba(0,0,0,0.1);
-	}
-	form div {
-		margin-bottom: 20px;
-	}
-	label {
-		display: block;
-		margin-bottom: 6px;
-		font-weight: bold;
-		color: #555;
-	}
-	input[type="text"], input[type="number"], textarea, select {
-		width: 100%;
-		padding: 10px;
-		border: 1px solid #ccc;
-		border-radius: 6px;
-		box-sizing: border-box;
-		font-size: 14px;
-	}
-	textarea {
-		height: 100px;
-		resize: vertical;
-	}
-	button {
-		padding: 10px 20px;
-		border: none;
-		border-radius: 6px;
-		background-color: #0077ff;
-		color: white;
-		cursor: pointer;
-		font-size: 14px;
-		margin-right: 10px;
-	}
-	button[type="button"] {
-		background-color: #888;
-	}
-	button:hover {
-		opacity: 0.9;
-	}
-	hr {
-		border: 0;
-		height: 1px;
-		background-color: #eee;
-		margin: 30px 0;
-	}
-	.img-preview {
-		display: flex;
-		gap: 15px;
-		flex-wrap: wrap;
-	}
-	.img-preview div {
-		text-align: center;
-	}
-	.img-preview img {
-		width: 120px;
-		height: 120px;
-		object-fit: cover;
-		border-radius: 6px;
-		border: 1px solid #ccc;
-	}
+    body {
+        font-family: 'Pretendard', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 10px;
+    }
+
+    /* 섹션 스타일 동일하게 적용 */
+    .section {
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    h1 {
+        font-size: 20px;
+        text-align: center;
+        margin: 15px 0;
+    }
+
+    /* 폼 내부 스타일 추가 (detail.jsp 느낌 유지) */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+    }
+    input[type="text"], input[type="number"], textarea, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        font-family: 'Pretendard', sans-serif;
+    }
+    textarea {
+        height: 150px;
+        resize: vertical;
+    }
+
+    /* 버튼 스타일 (detail.jsp와 동일) */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s;
+        background-color: #ff8a3d; /* 헤더 색상 */
+        color: white;
+        margin-right: 5px;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-cancel { background-color: #6c757d; }
+    .btn-delete { background-color: #ff4d4d; }
+
+    /* 이미지 미리보기 */
+    .img-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .img-preview img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #eee;
+    }
 </style>
 	
 </head>
@@ -97,12 +93,11 @@
 
 	<h1>상품 수정</h1>
 
-	<form action="update" method="post" enctype="multipart/form-data">
+	<form id="productForm" action="update" method="post" enctype="multipart/form-data">
 		
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		
 		<input type="hidden" name="productId" value="${product.productId}">
-		<input type="hidden" name="status" value="${product.status}">
 
 		<div>
 			<label>상품명:</label>
@@ -152,43 +147,51 @@
 		<hr>
 
 		<div>
-			<label>이미지 변경(선택):</label><br>
-			<input type="file" name="file1" accept="image/*">
-			<input type="file" name="file2" accept="image/*">
-			<input type="file" name="file3" accept="image/*">
+		    <label>이미지 변경(선택):</label><br>
+		    <input type="file" name="uploadFiles" accept="image/*" multiple>
 		</div>
 
 		<hr>
 
-		<c:if test="${sessionScope.memberId == product.sellerId}">
-			<button type="submit">수정 완료</button>
-			<a href="delete?productId=${product.productId}" onclick="return confirm('정말 삭제하시겠습니까?');">
-				<button type="button">삭제</button>
-			</a>
-		</c:if>
-		<button type="button" onclick="history.back()">취소</button>
+		<c:if test="${not empty sessionScope.loginUser and sessionScope.loginUser.id == product.sellerId}">
+	        <button type="submit" class="btn">수정 완료</button>
+	        <a href="delete?productId=${product.productId}" onclick="return confirm('정말 삭제하시겠습니까?');" style="text-decoration: none;">
+	            <button type="button" class="btn btn-delete">삭제</button>
+	        </a>
+	    </c:if>
+	    
+	    <button type="button" class="btn btn-cancel" onclick="history.back()">취소</button>
+		
 
 	</form>
 
 	<script>
-	var geocoder = new kakao.maps.services.Geocoder();
-
-	function searchAddress() {
-		new daum.Postcode({
-			oncomplete: function(data) {
-				var addr = data.address;
-				document.getElementById('location').value = addr;
-
-				geocoder.addressSearch(addr, function(results, status) {
-					if (status === kakao.maps.services.Status.OK) {
-						var result = results[0];
-						document.getElementById('lat').value = result.y;
-						document.getElementById('lon').value = result.x;
-					}
-				});
-			}
-		}).open();
-	}
+	    var geocoder;
+	    kakao.maps.load(function() {
+	        geocoder = new kakao.maps.services.Geocoder();
+	    });
+	
+	    function searchAddress() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                var addr = data.address;
+	                document.getElementById('location').value = addr;
+	                geocoder.addressSearch(addr, function(results, status) {
+	                    if (status === kakao.maps.services.Status.OK) {
+	                        document.getElementById('lat').value = results[0].y;
+	                        document.getElementById('lon').value = results[0].x;
+	                    }
+	                });
+	            }
+	        }).open();
+	    }
+	
+	    document.getElementById("productForm").addEventListener("submit", function(e){
+	        if(!document.getElementById('lat').value){
+	            e.preventDefault();
+	            alert("주소 검색을 완료해주세요.");
+	        }
+	    });
 	</script>
 	
 	<jsp:include page="/WEB-INF/views/include/Footer.jsp" />

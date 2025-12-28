@@ -160,7 +160,7 @@ h1 {
         <p style="color: #666; font-size: 14px;">로그인 후 채팅이 가능합니다.</p>
     </c:if>
 
-    <button class="btn" type="button" onclick="history.back()">목록으로</button>
+    <button class="btn" type="button" onclick="location.href='productlist'">목록으로</button>
 </div>
 
     <script>

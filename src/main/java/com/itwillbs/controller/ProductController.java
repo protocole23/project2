@@ -123,6 +123,10 @@ public class ProductController {
 		if (user == null || vo.getSellerId() != user.getId()) {
 	        return "redirect:/product/productlist";
 	    }
+		
+		
+		List<FileVO> fileList = fileDAO.getFiles("product", productId); 
+	    vo.setImages(fileList);
 
 		model.addAttribute("product", vo);
 		return "/product/update";
@@ -136,7 +140,14 @@ public class ProductController {
 
 		com.itwillbs.domain.UserVO user = (com.itwillbs.domain.UserVO) session.getAttribute("loginUser");
 
-		if (user == null || vo.getSellerId() != user.getId()) {
+		if (user == null) {
+	        return "redirect:/user/login";
+	    }
+		
+		int realSellerId = productService.getSellerIdByProductId(vo.getProductId());
+	    
+	    if (realSellerId != user.getId()) {
+	        logger.warn("수정 권한 없음: 유저 {}, 상품번호 {}", user.getId(), vo.getProductId());
 	        return "redirect:/product/productlist";
 	    }
 

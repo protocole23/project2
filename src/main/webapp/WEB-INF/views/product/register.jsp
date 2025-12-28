@@ -8,14 +8,12 @@
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
 <style>
-    /* 1. 배경 및 폰트 설정 (Header와 조화롭게) */
     .register-wrapper {
         background-color: #f8f9fa;
         padding: 50px 0;
         min-height: 80vh;
     }
 
-    /* 2. 중앙 카드 박스 */
     .register-card {
         max-width: 550px;
         margin: 0 auto;
@@ -33,7 +31,6 @@
         margin-bottom: 30px;
     }
 
-    /* 3. 폼 요소 정렬 */
     .form-group {
         margin-bottom: 20px;
         display: flex;
@@ -54,11 +51,9 @@
         padding: 12px 15px;
         border: 1px solid #ddd;
         border-radius: 8px;
-        box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+        box-sizing: border-box;
         font-size: 15px;
     }
-
-    /* 4. 주소 검색 영역 가로 배치 */
     .address-flex {
         display: flex;
         gap: 8px;
@@ -75,7 +70,7 @@
         font-size: 13px;
     }
 
-    /* 5. 버튼 스타일 */
+    
     .button-group {
         display: flex;
         gap: 10px;
