@@ -8,69 +8,69 @@
 <head>
 <meta charset="UTF-8">
 <title>${product.title} - 상품 상세</title>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e521fcb93dd80c8fe95035867771d15c"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services"></script>
 <style>
     body {
     font-family: 'Pretendard', sans-serif;
     background-color: #f8f9fa;
     margin: 0;
-    padding: 10px; /* 외부 여백 줄임 */
+    padding: 10px; 
 }
 
-/* 섹션 패딩 축소 */
+
 .section, .section1, .section2, .section3 {
-    margin-bottom: 15px; /* 섹션 간격 축소 */
+    margin-bottom: 15px;
     padding: 15px;
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
-/* 이미지 영역 수정 (핵심) */
+
 .images {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: flex-start; /* 이미지 왼쪽부터 정렬 */
+    justify-content: flex-start;
 }
 
 .images h3 {
-    width: 100%; /* 제목은 한 줄 차지 */
+    width: 100%;
     margin-top: 0;
     font-size: 16px;
 }
 
 .images img {
-    /* 이미지가 너무 커지지 않도록 최대 높이와 너비 제한 */
-    max-width: 48%; /* 한 줄에 두 개 정도 나오게 설정 (데스크탑 기준) */
-    max-height: 350px; /* 세로 길이를 350px로 제한 */
+    
+    max-width: 48%;
+    max-height: 350px;
     width: auto;
     height: auto;
-    object-fit: cover; /* 비율 유지하며 꽉 채우기 (이미지마다 크기가 다를 때 깔끔함) */
+    object-fit: cover;
     border-radius: 8px;
     border: 1px solid #eee;
     transition: transform 0.2s;
 }
 
 .images img:hover {
-    transform: scale(1.02); /* 살짝 커지는 효과 */
+    transform: scale(1.02);
 }
 
-/* 지도 크기 조절 */
+
 #map {
     width: 100%;
-    height: 250px; /* 지도를 조금 더 작게 조절 */
+    height: 250px;
     border-radius: 8px;
 }
 
-/* 제목 크기 조절 */
+
 h1 {
     font-size: 20px;
     text-align: center;
     margin: 15px 0;
 }
 
-/* 버튼 디자인 통일 (이전 가이드 적용) */
+
 .btn {
     padding: 10px 20px;
     border-radius: 8px;
@@ -80,10 +80,10 @@ h1 {
     transition: 0.2s;
 }
 
-/* 모바일 대응 */
+
 @media (max-width: 480px) {
     .images img {
-        max-width: 100%; /* 모바일에선 한 줄에 하나 */
+        max-width: 100%;
         max-height: 250px;
     }
 }
@@ -164,12 +164,11 @@ h1 {
 </div>
 
     <script>
-    // 카카오 맵 API가 로드된 후 실행되도록 감싸줍니다.
 	    kakao.maps.load(function() {
 	        var latStr = '${product.lat}';
 	        var lonStr = '${product.lon}';
 	
-	        console.log("DB에서 가져온 좌표:", latStr, lonStr); // 데이터가 오는지 확인용
+	        console.log("DB에서 가져온 좌표:", latStr, lonStr); 
 	
 	        var container = document.getElementById('map');
 	        

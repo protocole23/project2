@@ -16,8 +16,10 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +41,14 @@ public class ProductController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 	private static final String UPLOAD_PATH = "/usr/local/tomcat/upload/";
+	
+	@Value("${kakao.api.key}")
+    private String kakaoKey;
+
+    @ModelAttribute("kakaoKey")
+    public String getKakaoKey() {
+        return this.kakaoKey;
+    }
 
 	@Inject
 	private ProductService productService;
@@ -230,6 +240,7 @@ public class ProductController {
 	@RequestMapping(value="/detail", method=RequestMethod.GET)
 	public String detailGET(@RequestParam("productId") int productId, Model model) throws Exception {
 	    logger.debug("detailGET() 호출!");
+	    logger.debug("kakaoKey 값 확인: " + kakaoKey);
 	    
 	    ProductVO vo = productService.getProduct(productId);
 	    

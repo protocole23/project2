@@ -12,134 +12,180 @@
 <meta name="_csrf_header" content="${_csrf.headerName}">
 
 <style>
+body {
+	font-family: Arial, sans-serif;
+	background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
+	margin: 0;
+	padding: 0;
+}
+
 .chat-container {
-	width: 500px;
-	margin: 30px auto;
-	border: 1px solid #ccc;
+	width: 420px;
+	margin: 40px auto;
+	border-radius: 12px;
+	background-color: #fff;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 }
 
 .chat-header {
-	padding: 10px;
-	border-bottom: 1px solid #ccc;
+	padding: 12px;
+	background-color: #4a6cf7;
+	color: #fff;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+}
+
+.chat-header button {
+	background-color: #fff;
+	color: #4a6cf7;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.chat-header button:hover {
+	background-color: #eef1ff;
 }
 
 .chat-messages {
 	flex: 1;
-	padding: 10px;
+	padding: 12px;
 	overflow-y: auto;
-	border-bottom: 1px solid #ccc;
+	background-color: #f9fafb;
 }
 
 .chat-message {
-	margin-bottom: 8px;
+	margin-bottom: 10px;
+	max-width: 75%;
+	word-break: break-word;
 }
 
 .chat-message.me {
+	margin-left: auto;
 	text-align: right;
-	color: blue;
 }
 
 .chat-message.other {
+	margin-right: auto;
 	text-align: left;
-	color: black;
+}
+
+.chat-message.me div:last-child {
+	background-color: #4a6cf7;
+	color: #fff;
+}
+
+.chat-message.other div:last-child {
+	background-color: #e5e7eb;
+	color: #000;
 }
 
 .chat-nick {
-	font-size: 12px;
-	color: #666;
+	font-size: 11px;
+	margin-bottom: 3px;
+	color: #555;
+}
+
+.chat-message div:last-child {
+	padding: 8px 10px;
+	border-radius: 10px;
+	display: inline-block;
+	font-size: 14px;
 }
 
 .chat-input {
 	display: flex;
+	border-top: 1px solid #ddd;
 }
 
 .chat-input input {
 	flex: 1;
-	padding: 10px;
+	padding: 12px;
 	border: none;
-	border-top: 1px solid #ccc;
+	outline: none;
+	font-size: 14px;
 }
 
 .chat-input button {
-	width: 80px;
+	width: 90px;
+	border: none;
+	background-color: #4a6cf7;
+	color: #fff;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.chat-input button:hover {
+	background-color: #3957d6;
 }
 </style>
 
 <script>
 	
-	
-	/* ===== 서버에서 내려준 값 ===== */
-	const roomId = Number("${roomId}");
-	const myId = Number("${sessionScope.loginUser.id}");
-	const myNick = "${sessionScope.loginUser.name}";
 
-	/* ===== WebSocket 연결 (JSON 사용) ===== */
-	const socket = new WebSocket("ws://" + location.host + "/ws/chat?roomId=" + roomId);
+const roomId = Number("${roomId}");
+const myId = Number("${sessionScope.loginUser.id}");
+const myNick = "${sessionScope.loginUser.name}";
 
-	socket.onmessage = function(event) {
-		const msg = JSON.parse(event.data);
+// WebSocket 연결
+const socket = new WebSocket("ws://" + location.host + "/ws/chat?roomId=" + roomId);
 
-		const isMe = msg.senderId === myId;
-		appendMessage(msg.senderNick, msg.message, isMe);
-	};
+socket.onmessage = function(event) {
+    const msg = JSON.parse(event.data);
+    
+    if (msg.senderId !== myId) {
+        appendMessage(msg.senderNick, msg.message, false);
+    }
+};
 
-	/* ===== 메시지 전송 ===== */
-	function sendMessage() {
-		const input = document.getElementById("messageInput");
-		const text = input.value.trim();
+function sendMessage() {
+    const input = document.getElementById("messageInput");
+    const text = input.value.trim();
+    if (text === "") return;
 
-		if (text === "") return;
-		
-		// 1. 요소가 존재하는지 먼저 확인
-	    const csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
-	    const csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+    // 1. WebSocket 전송
+    const msg = {
+        roomId: roomId,
+        senderId: myId,
+        senderNick: myNick,
+        message: text
+    };
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(msg));
+    }
 
-	    // 2. 메타 태그가 없거나 내용이 비어있으면 에러 방지
-	    if (!csrfTokenMeta || !csrfHeaderMeta || !csrfHeaderMeta.content) {
-	        console.error("CSRF 메타 태그가 없거나 헤더 이름이 비어있습니다.");
-	        return; 
-	    }
-		
-		const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-		const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    // 2. DB 저장
+    const formData = new URLSearchParams();
+    formData.append("roomId", roomId);
+    formData.append("message", text);
 
-		const msg = {
-			roomId: roomId,
-			senderId: myId,
-			senderNick: myNick,
-			message: text
-		};
-
-		/* WebSocket 전송 */
-		socket.send(JSON.stringify(msg));
-
-		/* DB 저장 */
-		const formData = new URLSearchParams();
-		formData.append("roomId", roomId);
-		formData.append("message", text);
-		
-		const customHeaders = {
-		        "Content-Type": "application/x-www-form-urlencoded"
-		};
-		
-		fetch("/chat/send", {
-		    method: "POST",
-		    headers: {
-		    	"Content-Type": "application/x-www-form-urlencoded",
-		        [csrfHeader]: csrfToken
-		    },
-		    body: formData
-		})
-		.then(res => res.text())
-    	.then(data => console.log("DB 저장 응답:", data))
-    	.catch(err => console.error("Fetch 에러:", err));
-
-		input.value = "";
-	}
+    
+    fetch("/chat/send", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: formData
+    })
+    .then(res => {
+        if(!res.ok) throw new Error("서버 에러: " + res.status);
+        return res.text();
+    })
+    .then(data => {
+        console.log("DB 저장 완료:", data);
+        appendMessage(myNick, text, true);
+        input.value = "";
+    })
+    .catch(err => {
+        console.error("전송 에러:", err);
+    });
+}
 
 	/* ===== 메시지 출력 ===== */
 	function appendMessage(nick, text, isMe) {
@@ -172,6 +218,8 @@
 
 <body>
 
+<jsp:include page="/WEB-INF/views/include/Header.jsp" />
+
 <div class="chat-container">
 
 	<!-- 헤더 -->
@@ -198,7 +246,10 @@
 		<button onclick="sendMessage()">전송</button>
 	</div>
 
+
 </div>
+
+<jsp:include page="/WEB-INF/views/include/Footer.jsp" />
 
 </body>
 </html>

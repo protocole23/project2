@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<title>상품 수정</title>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e521fcb93dd80c8fe95035867771d15c&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services"></script>
 
 	<meta name="_csrf" content="${_csrf.token}"/>
 	<meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -20,7 +20,6 @@
         padding: 10px;
     }
 
-    /* 섹션 스타일 동일하게 적용 */
     .section {
         margin-bottom: 15px;
         padding: 15px;
@@ -35,7 +34,7 @@
         margin: 15px 0;
     }
 
-    /* 폼 내부 스타일 추가 (detail.jsp 느낌 유지) */
+    
     label {
         display: block;
         margin-bottom: 8px;
@@ -56,7 +55,7 @@
         resize: vertical;
     }
 
-    /* 버튼 스타일 (detail.jsp와 동일) */
+   
     .btn {
         padding: 10px 20px;
         border-radius: 8px;
@@ -64,7 +63,7 @@
         border: none;
         cursor: pointer;
         transition: 0.2s;
-        background-color: #ff8a3d; /* 헤더 색상 */
+        background-color: #ff8a3d;
         color: white;
         margin-right: 5px;
     }
@@ -72,7 +71,6 @@
     .btn-cancel { background-color: #6c757d; }
     .btn-delete { background-color: #ff4d4d; }
 
-    /* 이미지 미리보기 */
     .img-preview {
         display: flex;
         flex-wrap: wrap;
@@ -143,8 +141,6 @@
 		        </div>
 		    </c:forEach>
 		</div>
-
-		<hr>
 
 		<div>
 		    <label>이미지 변경(선택):</label><br>

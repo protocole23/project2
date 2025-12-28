@@ -12,9 +12,8 @@
 	min-height: 100vh;
 }
 
-/* 공통 콘텐츠 래퍼 */
 .content-wrapper {
-	flex: 1; /* 푸터를 아래로 밀지 않도록 */
+	flex: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;

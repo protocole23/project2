@@ -5,12 +5,11 @@
 <jsp:include page="/WEB-INF/views/include/Header.jsp" />
 
 <style>
-    /* 상품 리스트 전용 스타일 */
     .section-title { margin: 40px 0 20px; font-size: 22px; font-weight: bold; color: #333; }
     
     .product-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3열 배치 */
+        grid-template-columns: repeat(3, 1fr);
         gap: 25px;
         margin-bottom: 50px;
     }
@@ -42,7 +41,6 @@
     .product-price { font-size: 18px; color: #ff8a3d; font-weight: 800; }
     .product-date { font-size: 12px; color: #999; margin-top: 10px; }
 
-    /* 반응형: 화면이 작아지면 2열로 변경 */
     @media (max-width: 768px) {
         .product-grid { grid-template-columns: repeat(2, 1fr); }
     }

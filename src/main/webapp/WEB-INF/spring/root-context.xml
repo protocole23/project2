@@ -11,18 +11,19 @@
 		http://www.springframework.org/schema/tx 
 		https://www.springframework.org/schema/tx/spring-tx.xsd">
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:property-placeholder 
+    location="classpath:config/db.properties, 
+              classpath:config/api.properties" />
 	
 	<context:component-scan base-package="com.itwillbs" />
 	
 	<!-- dataSource : 디비 연결정보 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName"
-			value="com.mysql.cj.jdbc.Driver" />
-		<property name="url"
-				 value="jdbc:mysql://itwillbs.com:3306/c6d2507t4p2?serverTimezone=UTC&amp;useSSL=false"/>
-		<property name="username" value="c6d2507t4p2" />
-		<property name="password" value="1234" />
+		<property name="driverClassName" value="${db.driver}" />
+		<property name="url" value="${db.url}" />
+		<property name="username" value="${db.username}" />
+		<property name="password" value="${db.password}" />
 	</bean>
 	<!-- dataSource : 디비 연결정보 -->
 	

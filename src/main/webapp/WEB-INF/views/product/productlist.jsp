@@ -12,7 +12,6 @@ body {
     padding: 0;
 }
 
-/* 페이지 제목 */
 .pageTitle {
     font-size: 28px;
     font-weight: 800;
@@ -21,7 +20,6 @@ body {
     color: #ff8a3d;
 }
 
-/* 검색 영역 */
 #searchForm {
     display: flex;
     justify-content: center;
@@ -51,33 +49,33 @@ body {
 
 .footSearch {
     width: 100%;
-    max-content: 500px; /* 최대 너비 제한 */
+    max-content: 500px;
     display: flex;
     justify-content: center;
 }
 
 #subSearch {
-    display: flex !important; /* 가로 정렬 강제 */
+    display: flex !important; 
     flex-direction: row !important;
-    align-items: stretch !important; /* 자식 요소 높이 통일 */
+    align-items: stretch !important;
     width: 100%;
     max-width: 500px;
 }
 
 #subSearch input.form-control {
     flex: 1 !important;
-    height: 45px !important; /* 명확한 높이 지정 */
+    height: 45px !important; 
     border: 1px solid #ccc !important;
-    border-right: none !important; /* 버튼과 만나는 선 제거 */
+    border-right: none !important; 
     border-radius: 6px 0 0 6px !important;
-    margin: 0 !important; /* 기본 여백 제거 */
+    margin: 0 !important;
     padding: 0 15px !important;
     box-sizing: border-box !important;
 }
 
 #subSearch button.btn {
     width: 55px !important;
-    height: 45px !important; /* input과 동일한 높이 강제 */
+    height: 45px !important; 
     background-color: #ff8a3d !important;
     border: none !important;
     border-radius: 0 6px 6px 0 !important;
@@ -89,7 +87,7 @@ body {
     cursor: pointer !important;
 }
 
-/* 카드형 상품 리스트 */
+
 .productList {
     display: flex;
     flex-wrap: wrap;
@@ -162,7 +160,7 @@ body {
     margin: 0;
 }
 
-/* 판매 상태 */
+
 .prodStatus {
     display: inline-block;
     font-size: 12px;
@@ -173,11 +171,11 @@ body {
     color: #fff;
 }
 
-.status1 { background-color: #28a745; } /* 판매중 */
-.status2 { background-color: #ffc107; color: #333; } /* 예약중 */
-.status3 { background-color: #6c757d; } /* 거래완료 */
+.status1 { background-color: #28a745; }
+.status2 { background-color: #ffc107; color: #333; } 
+.status3 { background-color: #6c757d; } 
 
-/* 페이징 */
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -214,7 +212,6 @@ body {
     color: #fff;
 }
 
-/* 상품 등록 버튼 */
 section .btn {
     display: block;
     margin: 30px auto 0;
@@ -233,7 +230,6 @@ section .btn:hover {
     background-color: #218838;
 }
 
-/* 반응형 */
 @media (max-width: 768px) {
     .productList li {
         width: 45%;
@@ -241,13 +237,13 @@ section .btn:hover {
 }
 
 @media (max-width: 480px) {
-    /* 기존 flex-direction: column을 제거하여 가로 배치 유지 */
+    
     #subSearch {
         flex-direction: row; 
     }
     
     #subSearch .btn {
-        width: 55px; /* 모바일에서도 버튼 너비 유지 */
+        width: 55px;
     }
 }
 </style>

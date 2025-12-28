@@ -141,9 +141,8 @@
 	min-height: 100vh;
 }
 
-/* 공통 콘텐츠 래퍼 */
 .content-wrapper {
-	flex: 1; /* 푸터를 아래로 밀지 않도록 */
+	flex: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -183,7 +182,6 @@
 	font-size: 14px;
 }
 
-/* 아이디 중복검사 섹션 */
 #userid-section {
 	display: flex;
 	align-items: center;
@@ -203,15 +201,14 @@
 	cursor: pointer;
 	font-weight: bold;
 	transition: background-color 0.3s;
-	margin-left: 0; /* 왼쪽으로 붙이기 */
-	float: left; /* 버튼을 왼쪽으로 이동 */
+	margin-left: 0;
+	float: left;
 }
 
 #checkID:hover {
 	background-color: #e0a800;
 }
 
-/* 오류 메시지 */
 #errorMsg,
 #pwdError,
 #phoneError,
@@ -223,7 +220,6 @@
 	text-align: left;
 }
 
-/* 가입 버튼 */
 .form-join button[type="submit"] {
 	background-color: #28a745;
 	color: #fff;
@@ -242,9 +238,6 @@
 	background-color: #218838;
 }
 
-/* =========================
-   미디어 쿼리 - 모바일 최적화
-========================= */
 @media (max-width: 480px) {
 	.login-container,
 	.form-join {
